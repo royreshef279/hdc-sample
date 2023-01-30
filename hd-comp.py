@@ -1,9 +1,9 @@
-import random
 import numpy as np
 from scipy.spatial.distance import hamming
-from scipy.stats import binom
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+#Hamming distance for hypervectors of different dimensions
 d = 10000
 d_1 = 1000
 d_2 = 100
@@ -34,5 +34,42 @@ axes[0,0].set_xlabel("Hamming Distance")
 axes[0,0].set_title("Hamming Distance for 15,000\nrandomly generated pairs\nof hypervectors of 100, 1,000,\nand 10,000 dimensions",fontsize=10)
 axes[0,0].legend()
 
-
+#Hypevector Addition Hamming Distance (3,000 iterations)
+d = 10000
+n = 3000
+def most_frequent(List):
+    return max(set(List), key = List.count)
+ham_array_A_B=[]
+ham_array_A_C=[]
+ham_array_B_C=[]
+ham_array_X_A=[]
+ham_array_X_B=[]
+ham_array_X_C=[]
+for i in range(n+1):
+    arrA = np.random.randint(2, size=(d))
+    arrB = np.random.randint(2, size=(d))
+    arrC = np.random.randint(2, size=(d))
+    arrX = []
+    lst = [arrA,arrB,arrC]
+    for j in range(d):
+        arrT = [item[j] for item in lst]
+        arrX.append(most_frequent(arrT))
+    ham_array_A_B.append(hamming(arrA,arrB))
+    ham_array_A_C.append(hamming(arrA,arrC))
+    ham_array_B_C.append(hamming(arrB,arrC))
+    ham_array_X_A.append(hamming(arrX,arrA))
+    ham_array_X_B.append(hamming(arrX,arrB))
+    ham_array_X_C.append(hamming(arrX,arrC))
+sns.kdeplot(data=np.array(ham_array_A_B),ax=axes[0,1],color='blue',label='Ham(A,B)')
+sns.kdeplot(data=np.array(ham_array_A_C),ax=axes[0,1],color='red',label='Ham(A,C)')
+sns.kdeplot(data=np.array(ham_array_B_C),ax=axes[0,1],color='black',label='Ham(B,C)')
+sns.kdeplot(data=np.array(ham_array_X_A),ax=axes[0,1],color='orange',label='Ham(X,A)')
+sns.kdeplot(data=np.array(ham_array_X_B),ax=axes[0,1],color='green',label='Ham(X,B)')
+sns.kdeplot(data=np.array(ham_array_X_C),ax=axes[0,1],color='cyan',label='Ham(X,C)')
+axes[0,1].set_xlim(0, 1)
+axes[0,1].set_ylim(0,100)
+axes[0,1].set_ylabel("Probability(%)")
+axes[0,1].set_xlabel("Hamming Distance")
+axes[0,1].set_title("Hamming Distance for 3,000 additions\nof three 10,000 dimension\nrandom binary hypervectors",fontsize=10)
+axes[0,1].legend()
 plt.show()
