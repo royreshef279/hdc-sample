@@ -31,7 +31,6 @@ sns.kdeplot(data=np.array(ham_array_100),ax=axes[0,0],color='black',label='d=100
 axes[0,0].set_xlim(0, 1)
 axes[0,0].set_ylim(0,100)
 axes[0,0].set_ylabel("Probability(%)",fontsize=8)
-axes[0,0].set_xlabel("Hamming Distance",fontsize=8)
 axes[0,0].set_title("Hamming Distance for 15,000 randomly generated pairs of hypervectors of 100, 1,000,and 10,000 dimensions",fontsize=8)
 axes[0,0].legend()
 
@@ -67,10 +66,6 @@ sns.kdeplot(data=np.array(ham_array_B_C),ax=axes[0,1],color='black',label='Ham(B
 sns.kdeplot(data=np.array(ham_array_X_A),ax=axes[0,1],color='orange',label='Ham(X,A)')
 sns.kdeplot(data=np.array(ham_array_X_B),ax=axes[0,1],color='green',label='Ham(X,B)')
 sns.kdeplot(data=np.array(ham_array_X_C),ax=axes[0,1],color='cyan',label='Ham(X,C)')
-axes[0,1].set_xlim(0, 1)
-axes[0,1].set_ylim(0,100)
-axes[0,1].set_ylabel("Probability(%)",fontsize=8)
-axes[0,1].set_xlabel("Hamming Distance",fontsize=8)
 axes[0,1].set_title("Hamming Distance for 3,000 additions of three 10,000 dimension random binary hypervectors",fontsize=8)
 axes[0,1].legend()
 
@@ -89,10 +84,19 @@ for i in range(n):
 sns.kdeplot(data=np.array(ham_array_A_B),ax=axes[1,0],color='blue',label='Ham(A,B)')
 sns.kdeplot(data=np.array(ham_array_X_A),ax=axes[1,0],color='red',label='Ham(X,A)')
 sns.kdeplot(data=np.array(ham_array_X_B),ax=axes[1,0],color='black',label='Ham(X,B)')
-axes[1,0].set_xlim(0, 1)
-axes[1,0].set_ylim(0,100)
 axes[1,0].set_ylabel("Probability(%)",fontsize=8)
 axes[1,0].set_xlabel("Hamming Distance",fontsize=8)
 axes[1,0].set_title("Hamming Distance for 3,000 multiplications of three 10,000 dimension random binary hypervectors",fontsize=8)
 axes[1,0].legend()
+
+#Hypevector Permutation Hamming Distance (3,000 iterations)
+ham_A_rA=[]
+for i in range(n+1):
+    arrA = np.random.randint(2, size=(d))
+    arr_rA=np.roll(arrA,1)
+    ham_A_rA.append(hamming(arrA,arr_rA))
+sns.kdeplot(data=np.array(ham_A_rA),ax=axes[1,1],color='blue',label=('Ham(A, 'r'$\rho(A)$)'))
+axes[1,1].set_xlabel("Hamming Distance",fontsize=8)
+axes[1,1].set_title("Hamming Distance for 3,000 multiplications of three 10,000 dimension random binary hypervectors",fontsize=8)
+axes[1,1].legend()
 plt.show()
